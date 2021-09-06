@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+</head>
+
+<body>
+<p></p>
+<div layout:fragment="content">
+    <p></p>
+    <div class="container">
+        <form th:action="@{mylogs}" method="get">
+            <label>Mot cle:</label>
+            <input type="text" name="motCle"/>
+            <button class="btn btn-primary">Chercher</button>
+        </form>
+    </div>
+    <div class="container">
+        <p></p>
+
+        <h3>Logs</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>TYPE</th>
+                <th>BUREAU</th>
+                <th>DATE</th>
+                <th>Nom Personnel</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="i:${interventions}">
+                <td th:text="${i.id}"></td>
+                <td th:text="${i.type}"></td>
+                <td th:text="${i.numBureau}"></td>
+                <td th:text="${i.date}"></td>
+                <td th:text="${i.nomPersonnel}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

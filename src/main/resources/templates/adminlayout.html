@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+          th:href="@{css/bootstrap.min.css}"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand">  SEDD</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav" id="example-one"><!-- style="margin-left: auto -->
+                <li class="nav-item">
+                    <a th:href="@{/interventionad}" class="nav-link">Fiche dIntervention</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/logs}" class="nav-link">Journal des Interventions</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/operations}" class="nav-link">Operations</a>
+                </li>
+                <li class="nav-item" id="p">
+                    <a class="nav-link" id="navbarDropdown"
+                    role="button" data-toggle="dropdown">Gestion des Prestataires</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/users}" class="nav-link">Gestion des Utilisateurs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:inline="text">
+                        [[${#httpServletRequest.remoteUser}]]
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" style="margin-left: auto">
+                <li class="nav-item" >
+                    <a class="nav-link"
+                       th:href="@{/login?logout}" th:inline="text">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<section layout:fragment="content">
+</section>
+<footer class="fixed-bottom">
+    <hr/>
+    <div class="container">
+        <small>Copyright @2021</small>
+    </div>
+    <p></p>
+</footer>
+
+</body>
+</html>

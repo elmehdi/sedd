@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorator="adminlayout"
+      lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Fiche d'intervention</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+          th:href="@{css/bootstrap.min.css}"/>
+    <title>Datepicker</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<script type="text/javascript">
+    $(function () {
+        $('#datepicker').datepicker();
+    });
+</script>
+<body>
+
+<p></p>
+<div layout:fragment="content">
+    <div class="container col-md-10 col-md-offset-2">
+        <div class="row">
+            <form th:action="@{saveIntervention}" method="post" class="mt-5 border p-4 bg-light shadow">
+                <h4 class="mb-5 text-secondary">Rapport d'intervention</h4>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label>Traveaux effectuees</label>
+                        <input type="text" name="trvEffectuees" class="form-control"
+                               th:value="${intervention.trvEffectuees}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Heure debut</label>
+                        <input type="text" class="form-control" th:value="${intervention.heureDebut}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Duree</label>
+                        <input type="text" class="form-control"
+                               th:value="${intervention.duree}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="select1">Nature d'intervention</label>
+                        <div class="col-8">
+                            <select id="select1" name="nature" class="form-select-lg" th:value="${intervention.type}">
+                                <option value="Curatif">Curatif</option>
+                                <option value="Preventif">Preventif</option>
+                                <option value="Evolutif">Evolutif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Nom d'intervenant</label>
+                        <input type="text" name="nomi" class="form-control"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Prenom d'intervenant</label>
+                        <input type="text" name="prenomi" class="form-control"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Num Bureau</label>
+                        <input type="text" name="numBureau" class="form-control"
+                               th:value="${intervention.numBureau}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Nom de l'employe</label>
+                        <input type="text" name="numBureau" class="form-control"
+                               th:value="${intervention.nomPersonnel}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Observation</label>
+                        <input type="text" name="observation" class="form-control"
+                               th:value="${intervention.observation}"/>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="select1">Type de panne</label>
+                        <div class="col-8">
+                            <select id="select2" name="typePanne" class="form-select-lg"
+                                    th:value="${intervention.typePanne}">
+                                <option value="Materiel">Materiel</option>
+                                <option value="Logiciel">Logiciel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Date</label>
+                        <div class='input-group date' id='datepicker'>
+                            <input type='text' class="form-control" name="dt" placeholder="aaaa - mm - jj" th:field="*{intervention.date}"
+                                   th:value="${intervention.date}"/>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa r fa-calendar-alt"></i></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-3">
+                        <label for="select1" >Inventaire</label>
+                        <div class="col-8">
+                            <select id="select3" name="inv" class="form-select-lg"
+                                    th:value="${inventaire.type}">
+                                <option value="Pc">Pc </option>
+                                <option value="Scanner">Scanner </option>
+                                <option value="Imprimante">Imprimante</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label></label>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label>Numero de serie</label>
+                        <input type="text" name="ns" class="form-control" th:value="${inventaire.numSerie}"/>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button class="btn btn-success float-end">Enregistrer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

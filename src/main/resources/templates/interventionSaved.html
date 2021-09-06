@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="card border-secondary">
+        <div class="card-header">Confirmation</div>
+        <div class="card-body">
+            <div class="form-group">
+                <label>Date </label>
+                <label th:text="${intervention.date}"> </label>
+            </div>
+            <div class="form-group">
+                <label>Designation </label>
+                <label th:text="${intervention.observation}"> </label>
+            </div>
+            <div class="form-group">
+                <label>Inventaire </label>
+
+            </div>
+            <div class="form-group">
+                <label>Intervention </label>
+                <label th:text="${intervention.numBureau}"> </label>
+            </div>
+            <div class="form-group">
+                <label>nom </label>
+                <label th:text="${intervention.nomPersonnel}"> </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
