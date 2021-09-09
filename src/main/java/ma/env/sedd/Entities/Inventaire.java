@@ -2,6 +2,7 @@ package ma.env.sedd.Entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;

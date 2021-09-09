@@ -1,0 +1,74 @@
+*{
+    font-family: 'Lato', sans-serif;
+}
+
+body{
+    background-color: white;
+    background-image: url("../images/bg.jpg");
+    background-size: cover;
+}
+
+.login-div{
+    margin: 200px auto;
+    width: 320px;
+    background-color: lightgray;
+    padding: 60px;
+    border-radius: 3%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: 500px;
+}
+
+.logo{
+    width: 200px;
+    height: 170px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+}
+.logo img {
+    width: 100%;
+}
+
+.title{
+    text-align: center;
+    color: black;
+    font-weight: bolder;
+    font-size: 35px;
+}
+.form{
+    width: 100%;
+    margin-top: 30px;
+}
+.form input{
+    font-size: 18px;
+    padding: 10px 20px 10px 5px;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.uname, .passwd{
+    display: block;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 6px;
+    margin: 10px 0;
+}
+
+.form svg{
+    height: 25px;
+    margin-bottom: -5px;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.signin-btn{
+    width: 100%;
+    padding: 12px 10px;
+    border: none;
+    font-size: 18px;
+    border-radius: 30px;
+    background-color: green;
+    margin-top: 20px;
+    color: white;
+    margin-bottom: 5px;
+}

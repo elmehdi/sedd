@@ -19,6 +19,11 @@ public class IntervenantExterne extends Intervenant implements Serializable {
     private Collection<Mission> missions;
 
     public IntervenantExterne() {
+        super();
+    }
+
+    public IntervenantExterne(String nom, String prenom, String email, String password, Role role, int nombreIntervention) {
+        super(nom, prenom, email, password, role, nombreIntervention);
     }
 
     public void setMissions(Collection<Mission> missions) {

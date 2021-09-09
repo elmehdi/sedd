@@ -37,3 +37,13 @@
     top: 0;
     position: absolute;
 }
+.hidden{
+    display: none;
+}
+.show{
+    display: block;
+}
+.hidden1{
+    display: none;
+}
+

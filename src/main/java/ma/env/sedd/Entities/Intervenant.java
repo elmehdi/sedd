@@ -17,6 +17,7 @@ public class Intervenant extends User implements Serializable {
     private Collection<Intervention> interventions = new ArrayList<>();
 
     public Intervenant() {
+        super();
     }
     public Intervenant(String nom, String prenom, String email, String password, Role role, int nombreIntervention) {
         super(nom, prenom, email, password, role);

@@ -1,22 +1,15 @@
 package ma.env.sedd.Web;
 
-import ma.env.sedd.Dao.IntervenantRepository;
-import ma.env.sedd.Dao.InterventionRepository;
-import ma.env.sedd.Dao.InventaireRepository;
-import ma.env.sedd.Dao.UserRepository;
+import ma.env.sedd.Dao.*;
 import ma.env.sedd.Entities.*;
 import ma.env.sedd.Metier.IOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.model.IModel;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -33,8 +26,16 @@ public class InterventionControler {
     private UserRepository userRepository;
     @Autowired
     private IntervenantRepository intervenantRepository;
+    @Autowired
+    private  IntervenantExterneRepository intervenantExterneRepository;
     private Machine m;
 
+
+    @GetMapping("login")
+    public String login()
+    {
+        return "login";
+    }
     @RequestMapping(value = "/intervention")
     public String getintervention(@ModelAttribute("intervention") Intervention intervention, @ModelAttribute("inventaire") Inventaire inventaire) {
         return "interventionsForm";
@@ -62,10 +63,12 @@ public class InterventionControler {
     }
 
     @RequestMapping(value = "/saveIntervention", method = RequestMethod.POST)
-    public String saveIntervention(@ModelAttribute("intervention") Intervention intervention, @ModelAttribute("inventaire") Inventaire inventaire,
-                                   @ModelAttribute("intervenant") Intervenant intervenant,
+    public String saveIntervention(@ModelAttribute("intervention") Intervention intervention, BindingResult bound,
+                                   @ModelAttribute("inventaire") Inventaire inventaire,
+
                                    String typePanne, String nature, String inv,
-                                   String nomi, String prenomi, Long ns, String dt) {
+                                   String nom, String prenom, Long ns, String dt, String hd) {
+
         if ((typePanne.equals("Logiciel"))) {
             intervention.setTypePanne(Panne.Logiciel);
         } else {
@@ -89,16 +92,32 @@ public class InterventionControler {
             inventaire.setType(Machine.Imprimante);
             m = Machine.Imprimante;
         }
-        Intervenant i = new Intervenant();
-        i.setNom(nomi);
-        i.setPrenom(prenomi);
-        intervention.setIntervenants(i);
-        intervention.setDate(java.sql.Date.valueOf(dt));
+
+        Intervenant intervenant = new Intervenant();
+        intervenant.setNom(nom);
+        intervenant.setPrenom(prenom);
+       // if ((intervenantRepository.findByNomAndPrenom(nom, prenom) != null))
+        iOperations.incrementNombreIntervention(nom, prenom);
+        intervenant.setId(iOperations.getintervenantid(nom, prenom));
+     /*   else {
+            intervenant.setNombreIntervention(1);
+            inventaireRepository.save(inventaire);
+        }*/
+        intervention.setIntervenants(intervenant);
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try {
+            java.util.Date d = dateFormat.parse(hd);
+            intervention.setHeureDebut(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        intervention.setDate(Date.valueOf(dt));
         interventionRepository.save(intervention);
         if (inventaireRepository.isfound(ns, m))
             iOperations.incrementPanneTotal(ns, m);
         else {
             inventaire.setNumSerie(ns);
+            inventaire.setPanneTotal(1);
             inventaireRepository.save(inventaire);
         }
         return "interventionSaved";
@@ -137,19 +156,50 @@ public class InterventionControler {
             users = userRepository.findByNom(name);
         }
         model.addAttribute("user", users);
-
         model.addAttribute("Nom", name);
 
 
         return "userH";
     }
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public String userform(@ModelAttribute("u") User u)
+    @RequestMapping(value = "/usersform", method = RequestMethod.POST)
+    public String userform(String nom, String prenom, String email, String password,
+                           String role, String inorex, Model model)
     {
-
-        return "userH";
+        if(!role.equals("Intervenant"))
+        {
+            Role r;
+            r =  (role.equals("Admin")) ?  Role.Admin : Role.Operateur;
+            User u = new User(nom, prenom, email,  password, r);
+            userRepository.save(u);
+        }
+        else if (inorex.equals("Interne"))
+        {
+            Intervenant ii = new Intervenant(nom, prenom, email,  password, Role.Intervenant, 0);
+            intervenantRepository.save(ii);
+        }
+        else
+        {
+          /*  IntervenantExterne ie = new IntervenantExterne(u.getNom(), u.getPrenom(),
+                    u.getEmail(),  u.getEmail(), u.getRole(), 0);
+            intervenantExterneRepository.save(ie);*/
+        }
+        return "admin";
+    }
+    @RequestMapping(value = "/delete")
+    public String delete(Long id)
+    {
+        userRepository.deleteById(id);
+        return "redirect:/users";
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(Long id, Model model)
+    {
+        User u = userRepository.findById(id).get();
+        model.addAttribute("e", u);
+
+        return "redirect:/users";
+    }
 }
 
 

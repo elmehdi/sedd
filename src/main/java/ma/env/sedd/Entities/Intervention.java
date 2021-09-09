@@ -2,11 +2,13 @@ package ma.env.sedd.Entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 
 
 @Entity @Getter @Setter
@@ -15,24 +17,24 @@ public class Intervention implements Serializable {
     @GeneratedValue
     private Long id;
 
+
     private Date date;
     @Enumerated(EnumType.STRING)
     private Type type;
     private String trvEffectuees;
-    private java.sql.Time heureDebut;
-    private Time duree;
+    @Temporal(TemporalType.TIME)
+    private java.util.Date heureDebut;
+    private String duree;
     private String observation;
     private String nomPersonnel;
     private String numBureau;
     @Enumerated(EnumType.STRING)
     private Panne typePanne;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+//    @ManyToOne
     @JoinColumn(name = "intervant_id") // nom de lq cle etrangere
     private Intervenant intervenant;
-
-    public Intervenant getIntervenants() {
-        return intervenant;
-    }
 
     public void setIntervenants(Intervenant intervenant) {
         this.intervenant = intervenant;
@@ -41,7 +43,7 @@ public class Intervention implements Serializable {
     public Intervention() {
     }
     public Intervention(Date date, Type type, String trv_effectuees,
-                        Time heure_debut, Time duree, String observation, String nom_personnel, String num_bureau, Panne type_panne) {
+                        Time heure_debut, String duree, String observation, String nom_personnel, String num_bureau, Panne type_panne) {
         this.date = date;
         this.type = type;
         this.trvEffectuees = trv_effectuees;
@@ -53,8 +55,13 @@ public class Intervention implements Serializable {
         this.typePanne = type_panne;
     }
 
-/*    public Long getId() {
+/*
+  public Long getId() {
         return id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setId(Long id) {
@@ -65,9 +72,7 @@ public class Intervention implements Serializable {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+
 
     public Type getType() {
         return type;
@@ -77,19 +82,19 @@ public class Intervention implements Serializable {
         this.type = type;
     }
 
-    public String getTrv_effectuees() {
+    public String getTrvEffectuees() {
         return trvEffectuees;
     }
 
-    public void setTrv_effectuees(String trv_effectuees) {
+    public void setTrvEffectuees(String trv_effectuees) {
         this.trvEffectuees = trv_effectuees;
     }
 
-    public Time getHeure_debut() {
+    public Time getHeureDebut() {
         return heureDebut;
     }
 
-    public void setHeure_debut(Time heure_debut) {
+    public void setHeureDebut(Time heure_debut) {
         this.heureDebut = heure_debut;
     }
 
@@ -109,15 +114,15 @@ public class Intervention implements Serializable {
         this.observation = observation;
     }
 
-    public String getNom_personnel() {
+    public String getNomPersonnel() {
         return nomPersonnel;
     }
 
-    public void setNom_personnel(String nom_personnel) {
+    public void setNomPersonnel(String nom_personnel) {
         this.nomPersonnel = nom_personnel;
     }
 
-    public String getNum_bureau() {
+    public String getNumBureau() {
         return numBureau;
     }
 
@@ -125,11 +130,11 @@ public class Intervention implements Serializable {
         this.numBureau = num_bureau;
     }
 
-    public Panne getType_panne() {
+    public Panne getTypePanne() {
         return typePanne;
     }
 
-    public void setType_panne(Panne type_panne) {
+    public void setTypePanne(Panne type_panne) {
         this.typePanne = type_panne;
     }*/
 }

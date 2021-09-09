@@ -2,31 +2,34 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="adminlayout">
+      layout:decorator="adminlayout" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
+    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
-          th:href="@{/css/bootstrap.min.css}"/>
+          th:href="@{css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/main.js}" src="../static/js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/style.css"
           th:href="@{/css/style.css}"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+
+    <script type="text/javascript" th:src="@{/js/action.js}"></script>
+    <script type="text/javascript" th:src="@{/js/action1.js}"></script>
 
 </head>
 
 <body>
 <p></p>
-<div class="row" layout:fragment="content">
-    <div class="col col-2" style="margin-left: 200px">
+<div class="row" layout:fragment="content" style="margin-right: -200px">
+    <div class="col col-2" style="margin-left: 100px">
         <p style="margin-top: 70px"></p>
         <div class="leftside, mt-5 border p-4 bg-light shadow">
             <h3>Ajouter utilisateur</h3>
             <p></p>
-            <form action="" method="post">
+            <form id="users" th:action="@{usersform}" method="post">
                 <div class="form-group">
                     <label class="control-label"> Nom
                         <input class="form-control" type="text" name="nom"/>
@@ -48,42 +51,56 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label for="select1">Role</label>
-                    <div>
-                        <select id="select1" name="role" class="form-select-sm">
+                    <label>Role</label>
+                    <div class="form-select-lg">
+                        <select id="role" name="role" class="role" th:onchange="change()">
                             <option value="Admin">Admin</option>
                             <option value="Intervenant">Intervenant</option>
                             <option value="Operateur">Operateur</option>
                         </select>
                     </div>
                     <p></p>
+
                     <div class="form-group">
-                        <label for="select1">Prestataire</label>
-                        <div>
-                            <select id="select2" name="role" class="form-select-sm">
-                                <option value="Admin">Admin</option>
-                                <option value="Intervenant">Intervenant</option>
-                                <option value="Operateur">Operateur</option>
-                            </select>
+                        <div class="hidden" id="hid">
+                            <input type="radio" name="inorex" id="inorex" class="role1" value="Interne"
+                                   th:onclick="change2()"/>
+                            <label>Interne</label>
+
+                            <input type="radio" name="inorex" class="role11" value="Externe" th:onclick="change1()"/>
+                            <label>Externe</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="hidden1" id="hid1">
+                            <label>Prestataire</label>
+                            <div class="form-select-lg">
+                                <select id="rol2" name="role2" class="role2">
+                                    <option value="ANZA">ANZA</option>
+                                    <option value="FARGO">FARGO</option>
+                                    <option value="OPERA">OPERA</option>
+                                </select>
+                            </div>
                         </div>
 
                     </div>
                     <div>
                         <p></p>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button class="btn btn-primary">Save</button>
                     </div>
                 </div>
+
             </form>
 
         </div>
     </div>
-    <div class="col col-md-8">
+    <div class="col col-md-8" style="margin-top: 20px; margin-left: 55px">
         <div class="rightside, mt-lg-5 border p-4 bg-light shadow">
-            <p style="margin-top: 40px"></p>
+            <p style="margin-top: 20px"></p>
             <div>
                 <p></p>
                 <div class="container">
-                    <form th:action="@{users}" method="get">
+                    <form th:action="@{search}" method="get">
                         <label>Nom:</label>
                         <input type="text" name="Nom"/>
                         <button class="btn btn-primary">Chercher</button>
@@ -92,7 +109,7 @@
             </div>
             <div class="container">
                 <p></p>
-                <h3>Logs</h3>
+                <h3>Utilisateurs</h3>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -100,7 +117,8 @@
                         <th>Prenom</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Action</th>
+                        <th style="text-align: right">Actions</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -109,17 +127,78 @@
                         <td th:text="${i.prenom}"></td>
                         <td th:text="${i.email}"></td>
                         <td th:text="${i.role}"></td>
-
                         <td><a onclick="return confirm('Etes-vous sure ?')" class="btn btn-danger"
-                               >Delete</a></td>
-                        <td><a class="btn btn-success">Edit</a></td>
+                        th:href="@{delete(id=${i.id})}">Delete</a></td>
+                        <td><a class="btn btn-success eBtn">Edit</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <div class="formedit">
+        <form th:action="@{usersform}" method="post">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Editer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container col-md-10 col-md-offset-2">
+                                <div class="form-group">
+                                    <label class="control-label"> Nom
+                                        <input class="form-control col-md-9" type="text" name="nom"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"> Prenom
+                                        <input class="form-control" type="text" name="prenom"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"> Email
+                                        <input class="form-control" type="text" name="email"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label"> Password
+                                        <input class="form-control" type="text" name="password"/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <div class="form-select-lg">
+                                        <select id="role4" name="role4" class="role4" th:onchange="change()">
+                                            <option value="Admin">Admin</option>
+                                            <option value="Intervenant">Intervenant</option>
+                                            <option value="Operateur">Operateur</option>
+                                        </select>
+                                    </div>
+                                    <p></p>
+
+                                </div>
+                                <!--                            <div class="form-group">-->
+                                <!--                            <label for="email1" class="col-form-label">Email:</label>-->
+                                <!--                            <input type="text" class="form-control" id="email1" name="email1" value=""/>-->
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-primary" value="save"> Enregistrer</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 </div>
+
 </body>
 </html>

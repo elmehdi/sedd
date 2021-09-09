@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
 public interface IntervenantRepository extends JpaRepository<Intervenant, Integer> {
     @Query("select i from Intervenant i where i.nom = :x")
     Intervenant findByIntervenantName(@Param("x") String intervenantname);
+    Intervenant findByNomAndPrenom(String nom, String prenom);
     default void addInterventionToIntervenant(String intervenantName, Long interventionId)
     {
         Intervention in;
         InterventionRepository inr = null;
         in = inr.findById(interventionId).get();
-
     }
 }

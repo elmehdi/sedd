@@ -18,17 +18,22 @@ public class OperationsImpl implements IOperations{
     private InventaireRepository inventaireRepository;
     @Override
     public void incrementPanneTotal(Long ns, Machine m) {
-
         inventaireRepository.incrementPanne(ns, m);
     }
 
     @Override
-    public void incrementNombreIntervention(Integer id) {
-        Intervenant intervenant = intervenantRepository.findById(id).get();
+    public void incrementNombreIntervention(String nom, String prenom) {
+        Intervenant intervenant = intervenantRepository.findByNomAndPrenom(nom, prenom);
         intervenant.setNombreIntervention(intervenant.getNombreIntervention() + 1);
         intervenantRepository.save(intervenant);
     }
 
+    @Override
+    public Long getintervenantid(String nom, String prenom){
+        Intervenant intervenant = intervenantRepository.findByNomAndPrenom(nom, prenom);
+        return intervenant.getId();
+    }
+    
     @Override
     public void changePrestataire(Long id) {
 
